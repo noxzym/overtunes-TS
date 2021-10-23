@@ -18,9 +18,9 @@ export class HelpCommand extends Command {
             return msg.channel.send({
                 embeds: [new MessageEmbed()
                     .setAuthor(`${commands.name.toUpperCase()}`, undefined, "https://overtunes.netlify.app/docs/get-started/inviting-the-bot/")
-                    .addField(`Description:`, commands.description as string)
+                    .addField(`Description:`, `${commands.description ? commands.description : "-"}`)
                     .setColor(msg.guild?.me?.displayHexColor!)
-                    .addField(`Usage:`, commands.detailedDescription as string)
+                    .addField(`Usage:`, `${commands.detailedDescription ? commands.detailedDescription : "-"}`)
                     .setTimestamp()
                 ]
             })
