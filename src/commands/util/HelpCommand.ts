@@ -30,7 +30,7 @@ export class HelpCommand extends Command {
                 .setColor(msg.guild?.me?.displayHexColor!)
                 .setFooter(`Loaded: ${this.container.client.stores.get("commands").size} Commands`)
 
-            const categories = [...new Set(this.container.stores.get("commands").map(x => x.fullCategory[x.fullCategory.length - 1]))];
+            const categories = [...new Set(this.container.stores.get("commands").filter(f => f.category !== "developer").map(x => x.fullCategory[x.fullCategory.length - 1]))];
 
             for (const category of categories) {
                 const commands = this.container.stores.get("commands").filter(x => x.fullCategory[x.fullCategory.length - 1] === category);
