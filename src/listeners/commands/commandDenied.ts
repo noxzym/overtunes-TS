@@ -10,8 +10,6 @@ export class clientListener extends Listener {
     run({ context, message: content }: UserError, { message }: CommandDeniedPayload) {
         if (Reflect.get(Object(context), "silent")) return;
 
-        if (Reflect.get(Object(context), "silent")) return;
-
         return message.channel.send({
             embeds: [
                 new MessageEmbed()
