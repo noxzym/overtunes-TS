@@ -1,17 +1,21 @@
 // Dependecies
-import { SapphireClient, SapphireClientOptions } from "@sapphire/framework";
+import { SapphireClient } from "@sapphire/framework";
 import { Intents, Message } from "discord.js";
 import { Manager } from "erela.js";
 import { join, resolve } from "path";
-
 // Config
 import * as config from "../config.json";
 import lavalink from "../lavalink";
+import guild from "../database/Manager/GuildManager"
 
 class Overtunes extends SapphireClient {
 
     constructor() {
         super({
+            fetchPrefix: async (msg: Message) => {
+                const guildData = await guild.findOne({ id: msg.guild?.id! });
+                return guildData?.prefix ?? config.prefix;
+            },
             allowedMentions: {
                 users: [],
                 repliedUser: false,
@@ -34,11 +38,11 @@ class Overtunes extends SapphireClient {
                 delay: 5000,
                 limit: 2
             },
-            defaultPrefix: config.prefix,
             typing: false,
             failIfNotExists: true,
             baseUserDirectory: resolve(join(__dirname, "..")),
-            caseInsensitivePrefixes: true
+            caseInsensitivePrefixes: true,
+            caseInsensitiveCommands: true
         })
     }
 

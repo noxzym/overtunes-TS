@@ -12,36 +12,21 @@ import { Message, MessageEmbed, MessageButton, MessageActionRow } from "discord.
 export class HelpCommand extends Command {
     async messageRun(msg: Message, args: Args) {
 
-        const argument = await args.restResult("string");
+        let embed = new MessageEmbed()
+            .setAuthor(this.container.client.user?.username as string + ' Help menu', this.container.client.user?.displayAvatarURL(), "https://overtunes.netlify.app/docs/get-started/inviting-the-bot/")
+            .setColor(msg.guild?.me?.displayHexColor!)
+            .setFooter(`Loaded: ${this.container.client.stores.get("commands").size} Commands`)
 
-        if (argument.success) {
-            const commands = this.container.client.stores.get("commands").get(argument.value);
-            if (!commands) return msg.channel.send(`❌ ${argument.value} is not my command`);
-            return msg.channel.send({
-                embeds: [new MessageEmbed()
-                    .setAuthor(`${commands.name.toUpperCase()}`, undefined, "https://overtunes.netlify.app/docs/get-started/inviting-the-bot/")
-                    .addField(`Description:`, `${commands.description ? commands.description : "-"}`)
-                    .setColor(msg.guild?.me?.displayHexColor!)
-                    .addField(`Usage:`, `${commands.detailedDescription ? commands.detailedDescription : "-"}`)
-                    .setTimestamp()
-                ]
-            })
-        } else {
-            let embed = new MessageEmbed()
-                .setAuthor(this.container.client.user?.username as string + ' Help menu', this.container.client.user?.displayAvatarURL(), "https://overtunes.netlify.app/docs/get-started/inviting-the-bot/")
-                .setColor(msg.guild?.me?.displayHexColor!)
-                .setFooter(`Loaded: ${this.container.client.stores.get("commands").size} Commands`)
+        const categories = [...new Set(this.container.stores.get("commands").filter(f => f.category !== "developer").map(x => x.fullCategory[x.fullCategory.length - 1]))];
 
-            const categories = [...new Set(this.container.stores.get("commands").filter(f => f.category !== "developer").map(x => x.fullCategory[x.fullCategory.length - 1]))];
+        for (const category of categories) {
+            const commands = this.container.stores.get("commands").filter(x => x.fullCategory[x.fullCategory.length - 1] === category);
+            embed.fields.push({
+                name: `${category.toUpperCase()}`,
+                value: commands.map(x => `\`${x.name}\``).join(", "),
+                inline: false
+            });
 
-            for (const category of categories) {
-                const commands = this.container.stores.get("commands").filter(x => x.fullCategory[x.fullCategory.length - 1] === category);
-                embed.fields.push({
-                    name: `${category.toUpperCase()}`,
-                    value: commands.map(x => `\`${x.name}\``).join(", "),
-                    inline: false
-                });
-            }
 
             return msg.channel.send({
                 embeds: [embed],
