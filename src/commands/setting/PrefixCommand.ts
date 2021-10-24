@@ -8,7 +8,8 @@ import * as config from "../../config.json";
     name: "prefix",
     aliases: ["setprefix", "set-prefix"],
     cooldownDelay: 10000,
-    cooldownLimit: 3
+    cooldownLimit: 3,
+    requiredUserPermissions: ["MANAGE_GUILD"]
 })
 
 export class PrefixCommand extends Command {
