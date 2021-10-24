@@ -3,6 +3,7 @@ import { ApplyOptions } from "@sapphire/decorators";
 import { Message, MessageEmbed } from "discord.js";
 import util from "util";
 import { codeBlock } from "@discordjs/builders";
+import hastebin from "hastebin-gen";
 
 @ApplyOptions<CommandOptions>({
     name: "eval",
@@ -15,16 +16,14 @@ import { codeBlock } from "@discordjs/builders";
 
 export class EvalCommand extends Command {
     async messageRun(message: Message, args: Args) {
-        const msg = message; /* eslint-disable-line */
+        const msg = message;
         const userArgument = await args.restResult("string");
         if (!userArgument.success) return;
         const code = userArgument.value
-            .replace(/`/g, `\`${String.fromCharCode(8203)}`)
-            .replace(/@/g, `@${String.fromCharCode(8203)}`)
-            .replace(this.container.client.token as string, "[Censored]");
+
         try {
             let { evaled } = await this.parseEval(eval(code)) /* eslint-disable-line */
-            if (typeof evaled !== "string") evaled = util.inspect(evaled, { depth: 0 });
+            if (typeof evaled !== "string") evaled = util.inspect(evaled);
             msg.channel.send({
                 content: codeBlock("js", evaled)
             });
