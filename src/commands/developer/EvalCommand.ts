@@ -17,7 +17,7 @@ export class EvalCommand extends Command {
     async messageRun(message: Message, args: Args) {
         const msg = message; /* eslint-disable-line */
         const userArgument = await args.restResult("string");
-        if (!userArgument.success) return message.reply({ embeds: [new MessageEmbed().setDescription("❌ | You need to input code")] });
+        if (!userArgument.success) return;
         const code = userArgument.value
             .replace(/`/g, `\`${String.fromCharCode(8203)}`)
             .replace(/@/g, `@${String.fromCharCode(8203)}`)

@@ -4,7 +4,9 @@ import { Message, MessageEmbed, MessageButton, MessageActionRow } from "discord.
 
 @ApplyOptions<CommandOptions>({
     name: "help",
-    aliases: ["h", "?"]
+    aliases: ["h", "?"],
+    cooldownDelay: 5000,
+    cooldownLimit: 3
 })
 
 export class HelpCommand extends Command {

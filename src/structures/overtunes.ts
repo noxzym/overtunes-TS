@@ -1,6 +1,6 @@
 // Dependecies
 import { SapphireClient, SapphireClientOptions } from "@sapphire/framework";
-import { Intents } from "discord.js";
+import { Intents, Message } from "discord.js";
 import { Manager } from "erela.js";
 import { join, resolve } from "path";
 
@@ -8,10 +8,9 @@ import { join, resolve } from "path";
 import * as config from "../config.json";
 import lavalink from "../lavalink";
 
-
 class Overtunes extends SapphireClient {
 
-    constructor(clientOptions?: SapphireClientOptions) {
+    constructor() {
         super({
             allowedMentions: {
                 users: [],
@@ -32,8 +31,8 @@ class Overtunes extends SapphireClient {
             ],
             shards: "auto",
             defaultCooldown: {
-                delay: 2000,
-                limit: 3
+                delay: 5000,
+                limit: 2
             },
             defaultPrefix: config.prefix,
             typing: false,
